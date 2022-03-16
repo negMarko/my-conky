@@ -1,0 +1,79 @@
+conky.config = {
+
+background = flase,
+use_xft = true,
+font = '123:size=8',
+xftalpha = 0.1,
+update_interval = 0.5,
+total_run_times = 0,
+own_window = true,
+own_window_colour = '000000',
+own_window_class = 'Conky',
+own_window_argb_visual = true,
+own_window_type = 'window',
+own_window_transparent = true,
+own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+double_buffer = true,
+minimum_width = 250,
+minimum_height = 5,
+maximum_width = 400,
+draw_shades = false,
+draw_outline = false,
+draw_borders = false,
+draw_graph_borders = false,
+default_color = 'gray',
+default_shade_color = 'red',
+default_outline_color = 'green',
+alignment = 'middle_right',
+gap_x = 60,
+gap_y = 10,
+no_buffers = true,
+uppercase = false,
+cpu_avg_samples = 2,
+net_avg_samples = 1,
+override_utf8_locale = false,
+use_spacer = 'right'
+
+}
+
+conky.text = [[
+
+${color #22a7f0}${font :size= 30}${alignr}${time %H:%M}
+
+${font :size= 10}${alignr}${color 22a7f0}$nodename
+${font :size= 8}${color 22a7f0}${alignr}$uptime
+
+${font :size= 8}${color b3b3b3}${alignr}${exec hostnamectl | grep System | cut -c21-40}
+${alignr}${exec hostnamectl | grep Architecture | cut -c7-30}
+${alignr}${exec hostnamectl | grep Kernel | cut -c13-32}
+${image ~/Conky_Gorilla/Icons/lion.png -p 10,70 -s 160x160 -f 86400}
+${image ~/Conky_Gorilla/Icons/ubuntu.png -p 112,120 -s 42x42 -f 86400}
+
+${color 22a7f0}${font :size= 9}PROCESADOR TOTAL${alignr}${font :size= 9}${color 22a7f0}$cpu% $alignr ${color #AAAAAA}${exec /usr/bin/vcgencmd measure_temp | cut -c6-9} C
+${color 000000}${cpugraph 222222 22a7f0}
+${color f24732}Core I ${color f24732}${execi 5 sensors|grep 'Core 0'| awk -F'+' '{print $2}' | awk -F'.' '{print $1}'}${color 000000}${cpugraph cpu1 28,86 222222 f24732}${color f24732}${offset 4} Core III ${color f24732}${execi 5 sensors|grep 'Core 2'| awk -F'+' '{print $2}' | awk -F'.' '{print $1}'}${color 000000}${cpugraph cpu3 28,86 222222 f24732}
+${color 22a7f0}Core II ${color 22a7f0}${execi 5 sensors|grep 'Core 1'| awk -F'+' '{print $2}' | awk -F'.' '{print $1}'}${color 000000}${cpugraph cpu2 28,86 222222 22a7f0}${color 22a7f0}${offset 4}Core IV ${color 22a7f0}${execi 5 sensors|grep 'Core 3'| awk -F'+' '{print $2}' | awk -F'.' '{print $1}'}${color 000000}${cpugraph cpu4 28,86 222222 22a7f0}
+
+${color f24732}${font :size= 9}Memoria${alignr}$mem
+#${color f24732}${font :size= 9}Swap${alignr}$swapperc% / $swapmax
+${offset 4}${color 000000}${memgraph 222222 f24732}
+
+${color 22a7f0}${font :size= 9}DISCO DURO${alignr}${diskio /dev/sda}
+${offset 4}${color 000000}${diskiograph 222222 22a7f0}
+
+${color 22a7f0}${font :size= 9}Uso $alignc ${color 22a7f0}${fs_used /home} / ${fs_size /home}${color 22a7f0}${font :size=8} $alignr ${fs_free_perc /home}%
+$alignc${fs_bar 10,250 /home} 
+
+${color f24732}${font :size= 9}RED ${color #0000AA}
+${color f24732}${font :size=8}IP en eth0 $alignr ${color f24732}${addr eth0}
+
+${color 22a7f0}${offset 4}Bajada $alignr ${color #AAAAAA}${downspeed eth0}
+${color 22a7f0}${offset 4}Descargado: $alignr  ${color #AAAAAA}${totaldown eth0}
+
+$alignc${color f24732}${color 000000}${downspeedgraph eth0 28,178 222222 22a7f0}
+$alignc${color f24732}${color 000000}${upspeedgraph eth0 28,178 222222 f24732}
+
+${color f24732}${offset 4}Subida $alignr ${color #AAAAAA}${upspeed eth0}
+${color f24732}${offset 4}Cargado: $alignr  ${color #AAAAAA}${totalup eth0}
+
+]]
